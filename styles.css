@@ -1,0 +1,100 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+#search-input {
+    width: 60%;
+    padding: 10px;
+    margin-right: 10px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+#search-button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#search-button:hover {
+    background-color: #555;
+}
+
+#results {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.movie-card {
+    background-color: #fff;
+    padding: 15px;
+    margin: 15px;
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.movie-card h2 {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: #333;
+}
+
+.movie-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.movie-description {
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+.movie-popularity, .movie-language, .movie-release-date {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.movie-popularity span, .movie-language span, .movie-release-date span {
+    font-weight: bold;
+    color: #333;
+}
