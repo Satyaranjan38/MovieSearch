@@ -11,8 +11,14 @@ function displayResults(movies) {
     resultsDiv.innerHTML = '';
 
     movies.forEach(movie => {
+
+
         const movieCard = document.createElement('div');
         movieCard.className = 'movie-card';
+
+        movieCard.addEventListener('click', () => {
+            window.location.href = 'https://t.me/moviesearchgroup777';
+        });
 
         const movieImg = document.createElement('img');
         movieImg.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
