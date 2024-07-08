@@ -1,18 +1,54 @@
-document.getElementById('search-button').addEventListener('click', function() {
+// Function to fetch OAuth token
+async function fetchOAuthToken(clientId, clientSecret, tokenUrl) {
+    const body = `grant_type=client_credentials&client_id=${encodeURIComponent(clientId)}&client_secret=${encodeURIComponent(clientSecret)}`;
+    const response = await fetch(tokenUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body
+    });
+    const data = await response.json();
+    return data.access_token;
+}
+
+// Function to handle API request with OAuth token
+document.getElementById('search-button').addEventListener('click', async function() {
     const query = document.getElementById('search-input').value;
-    fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/search?query=${encodeURIComponent(query)}`)
-        .then(response => response.json())
-        .then(data => displayResults(data.results))
-        .catch(error => console.error('Error:', error));
+    const clientId = 'sb-na-20e3ce3b-94a8-412b-ae95-e3e44623bf39!t292265';
+    const clientSecret = 'yKZJl9AELfxltYhL+PcgK2lVGBw=';
+    const tokenUrl = 'https://10db0aa4trial.authentication.us10.hana.ondemand.com/oauth/token';
+
+    try {
+        // Fetch OAuth token
+        const token = await fetchOAuthToken(clientId, clientSecret, tokenUrl);
+
+        // Make API request with token
+        const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/search?query=${encodeURIComponent(query)}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Handle response
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayResults(data.results);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 });
 
+// Function to display search results
 function displayResults(movies) {
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = '';
 
     movies.forEach(movie => {
-
-
         const movieCard = document.createElement('div');
         movieCard.className = 'movie-card';
 
