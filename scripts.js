@@ -9,25 +9,29 @@ async function fetchOAuthToken(clientId, clientSecret, tokenUrl) {
         body: body
     });
     const data = await response.json();
-    return data.access_token;
+    localStorage.setItem('oauthToken', data.access_token);
 }
 
-
-const token = await fetchOAuthToken(clientId, clientSecret, tokenUrl);
-// Function to handle API request with OAuth token
-document.getElementById('search-button').addEventListener('click', async function() {
-    const query = document.getElementById('search-input').value;
+// Function to initialize the app and fetch the token if not already stored
+async function initializeApp() {
     const clientId = 'sb-na-20e3ce3b-94a8-412b-ae95-e3e44623bf39!t292265';
     const clientSecret = 'yKZJl9AELfxltYhL+PcgK2lVGBw=';
     const tokenUrl = 'https://10db0aa4trial.authentication.us10.hana.ondemand.com/oauth/token';
 
-   
+    if (!localStorage.getItem('oauthToken')) {
+        await fetchOAuthToken(clientId, clientSecret, tokenUrl);
+    }
+
+    // Fetch recent movies on page load
+    fetchRecentMovies();
+}
+
+// Function to handle API request with OAuth token
+document.getElementById('search-button').addEventListener('click', async function() {
+    const query = document.getElementById('search-input').value;
+    const token = localStorage.getItem('oauthToken');
 
     try {
-        // Fetch OAuth token
-        
-
-        // Make API request with token
         const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/search?query=${encodeURIComponent(query)}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -35,7 +39,6 @@ document.getElementById('search-button').addEventListener('click', async functio
             }
         });
 
-        // Handle response
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -48,8 +51,8 @@ document.getElementById('search-button').addEventListener('click', async functio
 });
 
 // Function to display search results
-function displayResults(movies) {
-    const resultsDiv = document.getElementById('results');
+function displayResults(movies, elementId = 'results') {
+    const resultsDiv = document.getElementById(elementId);
     resultsDiv.innerHTML = '';
 
     movies.forEach(movie => {
@@ -92,14 +95,15 @@ function displayResults(movies) {
     });
 }
 
-
+// Function to fetch recent movies
 async function fetchRecentMovies() {
+    const token = localStorage.getItem('oauthToken');
+
     try {
         const response = await fetch('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/recentMovies', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
-
             }
         });
 
@@ -114,5 +118,5 @@ async function fetchRecentMovies() {
     }
 }
 
-// Fetch recent movies on page load
-document.addEventListener('DOMContentLoaded', fetchRecentMovies);
+// Initialize the app
+document.addEventListener('DOMContentLoaded', initializeApp);
