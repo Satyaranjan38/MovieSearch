@@ -73,7 +73,7 @@ async function initializeApp() {
     const clientId = 'sb-na-20e3ce3b-94a8-412b-ae95-e3e44623bf39!t292265';
     const clientSecret = 'yKZJl9AELfxltYhL+PcgK2lVGBw=';
     const tokenUrl = 'https://10db0aa4trial.authentication.us10.hana.ondemand.com/oauth/token';
-
+    let userName = localStorage.getItem('userName');
 
     if (!userName) {
         window.location.href = "https://satyaranjan38.github.io/LoginPage/";
