@@ -15,9 +15,11 @@ body {
 
 h1 {
     color: #fff;
-    font-size: 2.5em;
+    font-size: 3em;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    font-family: 'Arial Black', Gadget, sans-serif;
+    letter-spacing: 2px;
 }
 
 #search-input {
@@ -58,8 +60,8 @@ h1 {
     background-color: #fff;
     color: #333;
     padding: 20px;
-    margin: 15px;
-    width: 300px;
+    margin: 10px; /* Reduced the margin between cards */
+    width: 280px; /* Adjusted width for better spacing */
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
