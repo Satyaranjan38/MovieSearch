@@ -77,7 +77,7 @@ async function initializeApp() {
 
     if (!userName) {
         window.location.href = "https://satyaranjan38.github.io/LoginPage/";
-        return; // This is now inside a function and will not cause an erro
+        return; // This is now inside a function and will not cause an error
     }
 
     if (!localStorage.getItem('oauthToken')) {
