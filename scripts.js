@@ -91,9 +91,11 @@ function displayResults(movies) {
 
 async function fetchRecentMovies() {
     try {
-        const response = await fetch('http://localhost:8086/recentMovies', {
+        const response = await fetch('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/recentMovies', {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+
             }
         });
 
