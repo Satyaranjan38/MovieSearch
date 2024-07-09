@@ -87,3 +87,26 @@ function displayResults(movies) {
         resultsDiv.appendChild(movieCard);
     });
 }
+
+
+async function fetchRecentMovies() {
+    try {
+        const response = await fetch('http://localhost:8086/recentMovies', {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayResults(data.results, 'recent-movies');
+    } catch (error) {
+        console.error('Error fetching recent movies:', error);
+    }
+}
+
+// Fetch recent movies on page load
+document.addEventListener('DOMContentLoaded', fetchRecentMovies);
