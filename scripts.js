@@ -12,6 +12,8 @@ async function fetchOAuthToken(clientId, clientSecret, tokenUrl) {
     return data.access_token;
 }
 
+
+const token = await fetchOAuthToken(clientId, clientSecret, tokenUrl);
 // Function to handle API request with OAuth token
 document.getElementById('search-button').addEventListener('click', async function() {
     const query = document.getElementById('search-input').value;
@@ -19,9 +21,11 @@ document.getElementById('search-button').addEventListener('click', async functio
     const clientSecret = 'yKZJl9AELfxltYhL+PcgK2lVGBw=';
     const tokenUrl = 'https://10db0aa4trial.authentication.us10.hana.ondemand.com/oauth/token';
 
+   
+
     try {
         // Fetch OAuth token
-        const token = await fetchOAuthToken(clientId, clientSecret, tokenUrl);
+        
 
         // Make API request with token
         const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/search?query=${encodeURIComponent(query)}`, {
