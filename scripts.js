@@ -4,6 +4,53 @@ let isLoading = false;
 const resultsDiv = document.getElementById('results');
 // Function to fetch OAuth token
 
+let userName = localStorage.getItem('userName') ; 
+console.log("user is " + userName) ; 
+
+
+// Fetch and display previous searches
+document.getElementById('search-input').addEventListener('focus', async function() {
+    const user = localStorage.getItem('userName');
+    const previousSearchesDropdown = document.getElementById('previous-searches');
+
+    try {
+        const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/getSearch?user=${encodeURIComponent(user)}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const uniqueSearches = [...new Set(data.previousSearch)];
+
+        previousSearchesDropdown.innerHTML = '';
+
+        uniqueSearches.forEach(search => {
+            const option = document.createElement('option');
+            option.value = search;
+            previousSearchesDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching previous searches:', error);
+    }
+});
+
+
+
+function displayPreviousSearches(searches) {
+    const previousSearchesDiv = document.getElementById('previous-searches');
+    previousSearchesDiv.innerHTML = ''; // Clear previous suggestions
+    searches.forEach(search => {
+        const searchItem = document.createElement('p');
+        searchItem.textContent = search;
+        searchItem.addEventListener('click', () => {
+            document.getElementById('search-input').value = search;
+            previousSearchesDiv.style.display = 'none'; // Hide suggestions after selection
+        });
+        previousSearchesDiv.appendChild(searchItem);
+    });
+    previousSearchesDiv.style.display = 'block'; // Show the suggestions
+}
 
 async function fetchOAuthToken(clientId, clientSecret, tokenUrl) {
     const body = `grant_type=client_credentials&client_id=${encodeURIComponent(clientId)}&client_secret=${encodeURIComponent(clientSecret)}`;
@@ -47,25 +94,48 @@ async function initializeApp() {
 document.getElementById('search-button').addEventListener('click', async function() {
     const query = document.getElementById('search-input').value;
     const token = localStorage.getItem('oauthToken');
+    const userName = localStorage.getItem('userName');
+    
+    console.log("user is " + userName);
 
     try {
-        const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/search?query=${encodeURIComponent(query)}`, {
+        // Fetch search results
+        const searchResponse = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/search?query=${encodeURIComponent(query)}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!searchResponse.ok) {
+            throw new Error(`HTTP error! Status: ${searchResponse.status}`);
         }
 
-        const data = await response.json();
-        displayResults(data.results);
+        const searchData = await searchResponse.json();
+        displayResults(searchData.results);
+
+        // Save the search data to the database
+        const saveSearchUrl = `https://MovieSearch.cfapps.us10-001.hana.ondemand.com/saveSearch?user=${encodeURIComponent(userName)}&name=${encodeURIComponent(query)}`;
+        const saveSearchResponse = await fetch(saveSearchUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!saveSearchResponse.ok) {
+            throw new Error(`HTTP error! Status: ${saveSearchResponse.status}`);
+        }
+
+        const saveSearchData = await saveSearchResponse.json();
+        console.log(saveSearchData.message);
+
     } catch (error) {
         console.error('Error:', error);
     }
 });
+
 
 // Function to display search results
 function displayResults(movies, elementId = 'results') {
@@ -180,6 +250,9 @@ function displayResultsrecent(movies) {
         resultsDiv.appendChild(movieCard); // Append movie card to results container
     });
 }
+
+
+
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', initializeApp);

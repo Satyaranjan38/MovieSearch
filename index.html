@@ -9,8 +9,10 @@
 <body>
     <div class="container">
         <h1>Satya Movie Search</h1>
-        <input type="text" id="search-input" placeholder="Search for a movie...">
+        <input type="text" id="search-input" placeholder="Search for a movie..." list="previous-searches">
+        <datalist id="previous-searches"></datalist>
         <button id="search-button">Search</button>
+        
         <div id="results"></div>
         <h2>Recent Movies</h2>
         <div id="recent-movies"></div>

@@ -110,3 +110,21 @@ h1 {
     font-weight: bold;
     color: #333;
 }
+
+
+/* Add this CSS */
+#previous-searches {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #080808;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+#previous-searches p {
+    margin: 5px 0;
+    cursor: pointer;
+}
