@@ -122,8 +122,8 @@ async function fetchRecentMovies(pageNo) {
     try {
         const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/recentMovies?pageNo=${pageNo}`, {
             headers: {
-                'Content-Type': 'application/json'
-                // 'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                 'Authorization': `Bearer ${token}`,
             }
         });
 
