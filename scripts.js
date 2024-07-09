@@ -5,6 +5,12 @@ const resultsDiv = document.getElementById('results');
 // Function to fetch OAuth token
 
 let userName = localStorage.getItem('userName') ; 
+
+
+if (!userName) {
+    window.location.href = "https://satyaranjan38.github.io/LoginPage/";
+    return;
+}
 console.log("user is " + userName) ; 
 
 
