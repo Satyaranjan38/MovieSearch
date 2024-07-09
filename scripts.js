@@ -7,10 +7,7 @@ const resultsDiv = document.getElementById('results');
 let userName = localStorage.getItem('userName') ; 
 
 
-if (!userName) {
-    window.location.href = "https://satyaranjan38.github.io/LoginPage/";
-    return;
-}
+
 console.log("user is " + userName) ; 
 
 
@@ -76,6 +73,12 @@ async function initializeApp() {
     const clientId = 'sb-na-20e3ce3b-94a8-412b-ae95-e3e44623bf39!t292265';
     const clientSecret = 'yKZJl9AELfxltYhL+PcgK2lVGBw=';
     const tokenUrl = 'https://10db0aa4trial.authentication.us10.hana.ondemand.com/oauth/token';
+
+
+    if (!userName) {
+        window.location.href = "https://satyaranjan38.github.io/LoginPage/";
+        return; // This is now inside a function and will not cause an error
+    }
 
     if (!localStorage.getItem('oauthToken')) {
         await fetchOAuthToken(clientId, clientSecret, tokenUrl);
