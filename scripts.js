@@ -216,7 +216,7 @@ async function fetchOAuthToken(clientId, clientSecret, tokenUrl) {
         body: body
     });
     const data = await response.json();
-    localStorage.setItem('oauthToken', data.access_token);
+    // localStorage.setItem('oauthToken', data.access_token);
 }
 
 // Function to initialize the app and fetch the token if not already stored
@@ -224,6 +224,7 @@ async function initializeApp() {
     const clientId = 'sb-na-20e3ce3b-94a8-412b-ae95-e3e44623bf39!t292265';
     const clientSecret = 'yKZJl9AELfxltYhL+PcgK2lVGBw=';
     const tokenUrl = 'https://10db0aa4trial.authentication.us10.hana.ondemand.com/oauth/token';
+    const demoApiUrl = 'https://moviesearch.cfapps.us10-001.hana.ondemand.com/HelloWorld/satya';
     let userName = localStorage.getItem('userName');
 
     if (!userName) {
@@ -231,9 +232,22 @@ async function initializeApp() {
         return; // This is now inside a function and will not cause an error
     }
 
+
+
     if (!localStorage.getItem('oauthToken')) {
         await fetchOAuthToken(clientId, clientSecret, tokenUrl);
     }
+
+    const isAuthorized = await checkAuthorization(demoApiUrl);
+
+    if (!isAuthorized) {
+        clearCookiesAndLocalStorage();
+        window.location.href = "https://satyaranjan38.github.io/LoginPage/";
+        return;
+    }
+
+
+
 
     // Fetch recent movies on page load
     await fetchRecentMovies(currentPage);
@@ -248,6 +262,42 @@ async function initializeApp() {
         }
     });
 
+}
+
+
+
+async function checkAuthorization(url) {
+    const token = localStorage.getItem('oauthToken');
+    try {
+        const response = await fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 401) {
+            return false; // Unauthorized
+        }
+
+        return true; // Authorized
+    } catch (error) {
+        console.error('Error checking authorization:', error);
+        return false; // Assume unauthorized on error
+    }
+}
+
+
+function clearCookiesAndLocalStorage() {
+    // Clear cookies
+    document.cookie.split(";").forEach(cookie => {
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+    });
+
+    // Clear localStorage
+    localStorage.clear();
 }
 
 // Function to handle API request with OAuth token
