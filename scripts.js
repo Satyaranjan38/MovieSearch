@@ -7,8 +7,137 @@ const resultsDiv = document.getElementById('results');
 let userName = localStorage.getItem('userName') ; 
 
 
-
 console.log("user is " + userName) ; 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.getElementById('menu-button');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const trendingButton = document.getElementById('trending-button');
+    const popularButton = document.getElementById('popular-button');
+    const categoryButton = document.getElementById('category-button');
+    const categoryList = document.getElementById('category-list');
+
+    // Toggle dropdown menu on menu button click
+    menuButton.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('show'); // Toggle the 'show' class
+    });
+
+    trendingButton.addEventListener('click', () => {
+        fetchMovies('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/trendingMovies');
+        dropdownMenu.style.display = 'none';
+    });
+
+    popularButton.addEventListener('click', () => {
+        fetchMovies('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/popular');
+        dropdownMenu.style.display = 'none';
+    });
+
+    // async function fetchCategories() {
+    //     try {
+    //         const response = await fetch('http://localhost:8086/catagory');
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! Status: ${response.status}`);
+    //         }
+    //         const data = await response.json();
+    //         displayCategories(data.categories);
+    //     } catch (error) {
+    //         console.error('Error fetching categories:', error);
+    //     }
+    // }
+
+    // Function to display category list
+    function displayCategories(categories) {
+        categoryList.innerHTML = '';
+        categories.forEach(category => {
+            const categoryItem = document.createElement('div');
+            categoryItem.textContent = category.name;
+            categoryItem.className = 'category-item';
+            categoryItem.addEventListener('click', async () => {
+                await fetchMovies(`http://localhost:8086/fromCatagory?genreId=${category.id}`);
+                dropdownMenu.style.display = 'none';
+            });
+            categoryList.appendChild(categoryItem);
+        });
+        categoryList.style.display = 'block';
+    }
+
+    // Event listeners
+    menuButton.addEventListener('click', () => {
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    categoryButton.addEventListener('mouseover', () => {
+        fetchCategories();
+    });
+
+
+    
+
+
+    
+});
+
+
+async function fetchCategories() {
+    try {
+        const token = localStorage.getItem('oauthToken');
+        const response = await fetch('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/catagory', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("data from categories ", data.genres);
+        displayCategories(data.genres);
+        return data.genres; // Return genres array
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        return []; // Return empty array on error
+    }
+}
+
+async function displayCategories(categories) {
+    const categoryList = document.getElementById('category-list');
+    categoryList.innerHTML = ''; // Clear previous content
+    console.log("Coming to display categories");
+
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.textContent = category.name;
+        button.classList.add('dropdown-item');
+        button.addEventListener('click', async () => {
+            await fetchMoviesByCategory(category.id);
+        });
+        categoryList.appendChild(button);
+    });
+}
+
+async function fetchMoviesByCategory(genreId) {
+    try {
+        const token = localStorage.getItem('oauthToken');
+        const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/fromCatagory?genreId=${genreId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        dropdownMenu.style.display = 'none';
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        displayResults(data.results); // Assuming displayResults function is defined
+    } catch (error) {
+        console.error(`Error fetching movies for genre ID ${genreId}:`, error);
+    }
+}
+
 
 
 // Fetch and display previous searches
@@ -37,6 +166,28 @@ document.getElementById('search-input').addEventListener('focus', async function
         console.error('Error fetching previous searches:', error);
     }
 });
+
+async function fetchMovies(url) {
+    const token = localStorage.getItem('oauthToken');
+    try {
+        const response = await fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                 'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayResults(data.results);
+    } catch (error) {
+        console.error('Error fetching movies:', error);
+    }
+}
+
 
 
 

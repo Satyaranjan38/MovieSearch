@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Search</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <h1>Satya Movie Search</h1>
+        <div class="menu-container">
+            <button id="menu-button" class="menu-button">☰</button>
+            <div id="dropdown-menu" class="dropdown-menu">
+                <button id="trending-button" class="dropdown-item">Trending</button>
+                <button id="popular-button" class="dropdown-item">Popular</button>
+                <button id="category-button" class="dropdown-item">Category</button>
+                <div id="category-list" class="category-list"></div>
+            </div>
+        </div>
         <input type="text" id="search-input" placeholder="Search for a movie..." list="previous-searches">
         <datalist id="previous-searches"></datalist>
         <button id="search-button">Search</button>
-        
+
         <div id="results"></div>
         <h2>Recent Movies</h2>
         <div id="recent-movies"></div>
+        <!-- Menu Button -->
+       
+
     </div>
     <script src="scripts.js"></script>
 </body>
+
 </html>
