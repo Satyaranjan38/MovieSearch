@@ -219,6 +219,10 @@ async function fetchOAuthToken(clientId, clientSecret, tokenUrl) {
     // localStorage.setItem('oauthToken', data.access_token);
 }
 
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // Function to initialize the app and fetch the token if not already stored
 async function initializeApp() {
     const clientId = 'sb-na-3763d269-8272-4902-8ea4-21723882f1c7!t308628';
@@ -234,14 +238,19 @@ async function initializeApp() {
 
 
 
-    if (!localStorage.getItem('oauthToken')) {
-        await fetchOAuthToken(clientId, clientSecret, tokenUrl);
-    }
+    // if (!localStorage.getItem('oauthToken')) {
+    //     await fetchOAuthToken(clientId, clientSecret, tokenUrl);
+    //     if (!localStorage.getItem('oauthToken')) {
+    //         window.location.href = "https://satyaranjan38.github.io/LoginPage/";
+    //         return;
+    //     }
+    // }
 
     const isAuthorized = await checkAuthorization(demoApiUrl);
 
     if (!isAuthorized) {
         clearCookiesAndLocalStorage();
+        await delay(3000);
         window.location.href = "https://satyaranjan38.github.io/LoginPage/";
         return;
     }
