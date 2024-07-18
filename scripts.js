@@ -221,10 +221,10 @@ async function fetchOAuthToken(clientId, clientSecret, tokenUrl) {
 
 // Function to initialize the app and fetch the token if not already stored
 async function initializeApp() {
-    const clientId = 'sb-na-20e3ce3b-94a8-412b-ae95-e3e44623bf39!t292265';
-    const clientSecret = 'yKZJl9AELfxltYhL+PcgK2lVGBw=';
-    const tokenUrl = 'https://10db0aa4trial.authentication.us10.hana.ondemand.com/oauth/token';
-    const demoApiUrl = 'https://moviesearch.cfapps.us10-001.hana.ondemand.com/HelloWorld/satya';
+    const clientId = 'sb-na-3763d269-8272-4902-8ea4-21723882f1c7!t308628';
+    const clientSecret = 'PoDxFeCXfWYmlfluThhpUUd6Uwo=';
+    const tokenUrl = 'https://cee938d6trial.authentication.us10.hana.ondemand.com/oauth/token';
+    const demoApiUrl = 'https://MovieSearch.cfapps.us10-001.hana.ondemand.com/HelloWorld/satya';
     let userName = localStorage.getItem('userName');
 
     if (!userName) {
