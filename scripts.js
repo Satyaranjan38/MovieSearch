@@ -1,4 +1,15 @@
+function showLoader() {
+    const loader = document.getElementById('loader');
+    loader.classList.add('active');
+    loader.style.display = 'flex';
+}
 
+// Function to hide the loader
+function hideLoader() {
+    const loader = document.getElementById('loader');
+    loader.classList.remove('active');
+    loader.style.display = 'none';
+}
 let currentPage = 1; // Initialize the current page number
 let isLoading = false;
 const resultsDiv = document.getElementById('results');
@@ -24,11 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     trendingButton.addEventListener('click', () => {
+        showLoader();
         fetchMovies('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/trendingMovies');
         dropdownMenu.style.display = 'none';
     });
 
     popularButton.addEventListener('click', () => {
+        showLoader();
         fetchMovies('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/popular');
         dropdownMenu.style.display = 'none';
     });
@@ -54,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryItem.textContent = category.name;
             categoryItem.className = 'category-item';
             categoryItem.addEventListener('click', async () => {
+                showLoader();
                 await fetchMovies(`http://localhost:8086/fromCatagory?genreId=${category.id}`);
                 dropdownMenu.style.display = 'none';
             });
@@ -144,11 +158,13 @@ async function fetchMoviesByCategory(genreId) {
 document.getElementById('search-input').addEventListener('focus', async function() {
     const user = localStorage.getItem('userName');
     const previousSearchesDropdown = document.getElementById('previous-searches');
+    
 
     try {
         const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/getSearch?user=${encodeURIComponent(user)}`);
         
         if (!response.ok) {
+            hideLoader();
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
@@ -178,12 +194,15 @@ async function fetchMovies(url) {
         });
 
         if (!response.ok) {
+            hideLoader();
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
+        hideLoader();
         displayResults(data.results);
     } catch (error) {
+        hideLoader();
         console.error('Error fetching movies:', error);
     }
 }
@@ -330,6 +349,8 @@ document.getElementById('search-button').addEventListener('click', async functio
     const query = document.getElementById('search-input').value;
     const token = localStorage.getItem('oauthToken');
     const userName = localStorage.getItem('userName');
+
+    showLoader() ; 
     
     console.log("user is " + userName);
 
@@ -343,10 +364,12 @@ document.getElementById('search-button').addEventListener('click', async functio
         });
 
         if (!searchResponse.ok) {
+            hideLoader();
             throw new Error(`HTTP error! Status: ${searchResponse.status}`);
         }
 
         const searchData = await searchResponse.json();
+        hideLoader() ; 
         displayResults(searchData.results);
 
         // Save the search data to the database
@@ -423,7 +446,7 @@ function displayResults(movies, elementId = 'results') {
 // Function to fetch recent movies
 async function fetchRecentMovies(pageNo) {
     const token = localStorage.getItem('oauthToken');
-
+    showLoader();
     try {
         const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/recentMovies?pageNo=${pageNo}`, {
             headers: {
@@ -433,10 +456,12 @@ async function fetchRecentMovies(pageNo) {
         });
 
         if (!response.ok) {
+            hideLoader() ; 
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
+        hideLoader() ; 
         displayResultsrecent(data.results); // Display results for the current page
         currentPage++; // Increment the current page number for next fetch
     } catch (error) {
