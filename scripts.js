@@ -223,6 +223,22 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const notificationButton = document.getElementById('notification-button');
+const notificationArea = document.getElementById('notification-area');
+
+// Toggle the visibility of the notification area on button click
+notificationButton.addEventListener('click', () => {
+    // Check if the notification area is currently visible
+    if (notificationArea.style.display === 'none' || notificationArea.style.display === '') {
+        // Show the notification area
+        notificationArea.style.display = 'block';
+
+    } else {
+        // Hide the notification area
+        notificationArea.style.display = 'none';
+    }
+});
+
 // Function to initialize the app and fetch the token if not already stored
 async function initializeApp() {
     const clientId = 'sb-na-3763d269-8272-4902-8ea4-21723882f1c7!t308628';
