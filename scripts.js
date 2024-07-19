@@ -265,6 +265,15 @@ async function initializeApp() {
     const tokenUrl = 'https://cee938d6trial.authentication.us10.hana.ondemand.com/oauth/token';
     const demoApiUrl = 'https://MovieSearch.cfapps.us10-001.hana.ondemand.com/HelloWorld/satya';
     let userName = localStorage.getItem('userName');
+    const loader = document.getElementById('loader');
+    const content = document.querySelector('.container');
+
+    showLoader() ; 
+
+    // Hide loader and show content when the page has fully loaded
+    window.addEventListener('load', () => {
+        hideLoader() ; 
+    });
 
     if (!userName) {
         window.location.href = "https://satyaranjan38.github.io/LoginPage/";
@@ -289,6 +298,8 @@ async function initializeApp() {
         window.location.href = "https://satyaranjan38.github.io/LoginPage/";
         return;
     }
+
+    
 
 
 
