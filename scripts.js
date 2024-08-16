@@ -15,10 +15,11 @@ let isLoading = false;
 const resultsDiv = document.getElementById('results');
 // Function to fetch OAuth token
 
-let userName = localStorage.getItem('userName') ; 
+// let userName = localStorage.getItem('userName') ; 
 
 
-console.log("user is " + userName) ; 
+// console.log("user is " + userName) ; 
+const userName = "i am noob" ; 
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -264,7 +265,7 @@ async function initializeApp() {
     const clientSecret = 'PoDxFeCXfWYmlfluThhpUUd6Uwo=';
     const tokenUrl = 'https://cee938d6trial.authentication.us10.hana.ondemand.com/oauth/token';
     const demoApiUrl = 'https://MovieSearch.cfapps.us10-001.hana.ondemand.com/HelloWorld/satya';
-    let userName = localStorage.getItem('userName');
+    // let userName = localStorage.getItem('userName');
     const loader = document.getElementById('loader');
     const content = document.querySelector('.container');
 
@@ -275,10 +276,10 @@ async function initializeApp() {
         hideLoader() ; 
     });
 
-    if (!userName) {
-        window.location.href = "https://satyaranjan38.github.io/LoginPage/";
-        return; // This is now inside a function and will not cause an error
-    }
+    // if (!userName) {
+    //     window.location.href = "https://satyaranjan38.github.io/LoginPage/";
+    //     return; // This is now inside a function and will not cause an error
+    // }
 
 
 
@@ -290,14 +291,14 @@ async function initializeApp() {
     //     }
     // }
 
-    const isAuthorized = await checkAuthorization(demoApiUrl);
+    // const isAuthorized = await checkAuthorization(demoApiUrl);
 
-    if (!isAuthorized) {
-        clearCookiesAndLocalStorage();
-        await delay(3000);
-        window.location.href = "https://satyaranjan38.github.io/LoginPage/";
-        return;
-    }
+    // if (!isAuthorized) {
+    //     clearCookiesAndLocalStorage();
+    //     await delay(3000);
+    //     window.location.href = "https://satyaranjan38.github.io/LoginPage/";
+    //     return;
+    // }
 
     
 
@@ -321,26 +322,26 @@ async function initializeApp() {
 
 
 
-async function checkAuthorization(url) {
-    const token = localStorage.getItem('oauthToken');
-    try {
-        const response = await fetch(url, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
+// async function checkAuthorization(url) {
+//     const token = localStorage.getItem('oauthToken');
+//     try {
+//         const response = await fetch(url, {
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': `Bearer ${token}`
+//             }
+//         });
 
-        if (response.status === 401) {
-            return false; // Unauthorized
-        }
+//         if (response.status === 401) {
+//             return false; // Unauthorized
+//         }
 
-        return true; // Authorized
-    } catch (error) {
-        console.error('Error checking authorization:', error);
-        return false; // Assume unauthorized on error
-    }
-}
+//         return true; // Authorized
+//     } catch (error) {
+//         console.error('Error checking authorization:', error);
+//         return false; // Assume unauthorized on error
+//     }
+// }
 
 
 function clearCookiesAndLocalStorage() {
@@ -358,8 +359,8 @@ function clearCookiesAndLocalStorage() {
 // Function to handle API request with OAuth token
 document.getElementById('search-button').addEventListener('click', async function() {
     const query = document.getElementById('search-input').value;
-    const token = localStorage.getItem('oauthToken');
-    const userName = localStorage.getItem('userName');
+    // const token = localStorage.getItem('oauthToken');
+     const userName = "i am noob";
 
     showLoader() ; 
     
@@ -369,7 +370,7 @@ document.getElementById('search-button').addEventListener('click', async functio
         // Fetch search results
         const searchResponse = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/search?query=${encodeURIComponent(query)}`, {
             headers: {
-                'Authorization': `Bearer ${token}`,
+                // 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });
@@ -389,7 +390,7 @@ document.getElementById('search-button').addEventListener('click', async functio
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                // 'Authorization': `Bearer ${token}`
             }
         });
 
@@ -456,13 +457,13 @@ function displayResults(movies, elementId = 'results') {
 
 // Function to fetch recent movies
 async function fetchRecentMovies(pageNo) {
-    const token = localStorage.getItem('oauthToken');
+    // const token = localStorage.getItem('oauthToken');
     showLoader();
     try {
         const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/recentMovies?pageNo=${pageNo}`, {
             headers: {
                 'Content-Type': 'application/json',
-                 'Authorization': `Bearer ${token}`,
+                //  'Authorization': `Bearer ${token}`,
             }
         });
 
