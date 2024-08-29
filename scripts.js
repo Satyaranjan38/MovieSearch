@@ -5,8 +5,7 @@ function showLoader() {
     loader.style.display = 'flex';
 }
 
-const API_BASE_URL = "https://railwaybackend-ludo.onrender.com" ; 
-
+const API_BASE_URL = "https://railwaybackend-ludo.onrender.com";
 
 // Function to hide the loader
 function hideLoader() {
@@ -103,25 +102,25 @@ async function fetchMovies(url) {
 // Function to fetch and display recent movies
 async function fetchRecentMovies(pageNo) {
     showLoader();
+    isLoading = true; // Set loading state to true before fetching data
     try {
         const response = await fetch(`${API_BASE_URL}/recentMovies?pageNo=${pageNo}`);
         if (!response.ok) {
-            hideLoader();
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        hideLoader();
         displayResults(data.results);
-        currentPage++;
+        currentPage++; // Increment page number after successful fetch
     } catch (error) {
-        hideLoader();
         console.error('Error fetching recent movies:', error);
+    } finally {
+        hideLoader();
+        isLoading = false; // Reset loading state after fetching data
     }
 }
 
 // Function to display movie results on the page
 function displayResults(movies) {
-    resultsDiv.innerHTML = ''; // Clear previous results
     movies.forEach(movie => {
         const movieCard = document.createElement('div');
         movieCard.className = 'movie-card';
@@ -169,12 +168,10 @@ async function initializeApp() {
     // Fetch recent movies on load
     await fetchRecentMovies(currentPage);
 
+    // Implement infinite scroll
     window.addEventListener('scroll', async () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
-            currentPage++;
-            isLoading = true;
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !isLoading) {
             await fetchRecentMovies(currentPage);
-            isLoading = false;
         }
     });
 
@@ -196,11 +193,12 @@ document.getElementById('search-button').addEventListener('click', async functio
         }
         const searchData = await searchResponse.json();
         hideLoader();
+        resultsDiv.innerHTML = ''; // Clear previous results
         displayResults(searchData.results);
 
         // Save the search data to the database
         const userName = "i am noob";
-        const saveSearchUrl = `API_BASE_URL/saveSearch?user=${encodeURIComponent(userName)}&name=${encodeURIComponent(query)}`;
+        const saveSearchUrl = `${API_BASE_URL}/saveSearch?user=${encodeURIComponent(userName)}&name=${encodeURIComponent(query)}`;
         const saveSearchResponse = await fetch(saveSearchUrl, {
             method: 'POST',
             headers: {
