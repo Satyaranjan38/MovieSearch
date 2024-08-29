@@ -5,7 +5,7 @@ function showLoader() {
     loader.style.display = 'flex';
 }
 
-const API_BASE_URL = "http://localhost:8080" ; 
+const API_BASE_URL = "https://railwaybackend-ludo.onrender.com" ; 
 
 
 // Function to hide the loader
