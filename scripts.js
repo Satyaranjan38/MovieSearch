@@ -37,13 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     trendingButton.addEventListener('click', () => {
         showLoader();
-        fetchMovies('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/trendingMovies');
+        fetchMovies('https://railwaybackend-ludo.onrender.com/trendingMovies');
         dropdownMenu.style.display = 'none';
     });
 
     popularButton.addEventListener('click', () => {
         showLoader();
-        fetchMovies('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/popular');
+        fetchMovies('https://railwaybackend-ludo.onrender.com/popular');
         dropdownMenu.style.display = 'none';
     });
 
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchCategories() {
     try {
         const token = localStorage.getItem('oauthToken');
-        const response = await fetch('https://MovieSearch.cfapps.us10-001.hana.ondemand.com/catagory', {
+        const response = await fetch('https://railwaybackend-ludo.onrender.com/catagory', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -135,7 +135,7 @@ async function displayCategories(categories) {
 async function fetchMoviesByCategory(genreId) {
     try {
         const token = localStorage.getItem('oauthToken');
-        const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/fromCatagory?genreId=${genreId}`, {
+        const response = await fetch(`https://railwaybackend-ludo.onrender.com/fromCatagory?genreId=${genreId}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -162,7 +162,7 @@ document.getElementById('search-input').addEventListener('focus', async function
     
 
     try {
-        const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/getSearch?user=${encodeURIComponent(user)}`);
+        const response = await fetch(`https://railwaybackend-ludo.onrender.com/getSearch?user=${encodeURIComponent(user)}`);
         
         if (!response.ok) {
             hideLoader();
@@ -264,7 +264,7 @@ async function initializeApp() {
     const clientId = 'sb-na-3763d269-8272-4902-8ea4-21723882f1c7!t308628';
     const clientSecret = 'PoDxFeCXfWYmlfluThhpUUd6Uwo=';
     const tokenUrl = 'https://cee938d6trial.authentication.us10.hana.ondemand.com/oauth/token';
-    const demoApiUrl = 'https://MovieSearch.cfapps.us10-001.hana.ondemand.com/HelloWorld/satya';
+    const demoApiUrl = 'https://railwaybackend-ludo.onrender.com/HelloWorld/satya';
     // let userName = localStorage.getItem('userName');
     const loader = document.getElementById('loader');
     const content = document.querySelector('.container');
@@ -368,7 +368,7 @@ document.getElementById('search-button').addEventListener('click', async functio
 
     try {
         // Fetch search results
-        const searchResponse = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/search?query=${encodeURIComponent(query)}`, {
+        const searchResponse = await fetch(`https://railwaybackend-ludo.onrender.com/search?query=${encodeURIComponent(query)}`, {
             headers: {
                 // 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -385,7 +385,7 @@ document.getElementById('search-button').addEventListener('click', async functio
         displayResults(searchData.results);
 
         // Save the search data to the database
-        const saveSearchUrl = `https://MovieSearch.cfapps.us10-001.hana.ondemand.com/saveSearch?user=${encodeURIComponent(userName)}&name=${encodeURIComponent(query)}`;
+        const saveSearchUrl = `https://railwaybackend-ludo.onrender.com/saveSearch?user=${encodeURIComponent(userName)}&name=${encodeURIComponent(query)}`;
         const saveSearchResponse = await fetch(saveSearchUrl, {
             method: 'POST',
             headers: {
@@ -460,7 +460,7 @@ async function fetchRecentMovies(pageNo) {
     // const token = localStorage.getItem('oauthToken');
     showLoader();
     try {
-        const response = await fetch(`https://MovieSearch.cfapps.us10-001.hana.ondemand.com/recentMovies?pageNo=${pageNo}`, {
+        const response = await fetch(`https://railwaybackend-ludo.onrender.com/recentMovies?pageNo=${pageNo}`, {
             headers: {
                 'Content-Type': 'application/json',
                 //  'Authorization': `Bearer ${token}`,
