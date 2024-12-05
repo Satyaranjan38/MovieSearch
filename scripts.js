@@ -6,7 +6,7 @@ function showLoader() {
 }
 
 //const API_BASE_URL = "https://railwaybackend-ludo.onrender.com";
-const API_BASE_URL = "https://railwaybackend2.onrender.com";
+const API_BASE_URL = "https://railwaybackend-l1gq.onrender.com";
 // Function to hide the loader
 function hideLoader() {
     const loader = document.getElementById('loader');
